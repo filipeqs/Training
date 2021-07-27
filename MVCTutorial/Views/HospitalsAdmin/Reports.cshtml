@@ -1,0 +1,57 @@
+﻿@model dynamic
+@using MVCTutorial.Models
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Reports</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        <table class="table table-striped">
+            <tr>
+                <th>Patient Name</th>
+                <th>Contact</th>
+            </tr>
+            @foreach (Patient patient in Model.Patients)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(p => patient.Name)</td>
+                    <td>@Html.DisplayFor(p => patient.Mobile)</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="col-md-3">
+        <table class="table table-striped">
+            <tr>
+                <th>Doctor Name</th>
+                <th>Speciality</th>
+            </tr>
+            @foreach (Doctor doctor in Model.Doctors)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(p => doctor.Name)</td>
+                    <td>@Html.DisplayFor(p => doctor.Speciality)</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="col-md-3">
+        <table class="table table-striped">
+            <tr>
+                <th>Lab Test Name</th>
+            </tr>
+            @foreach (Lab lab in Model.Labs)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(p => lab.TestName)</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>

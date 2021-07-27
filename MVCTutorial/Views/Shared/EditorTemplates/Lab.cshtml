@@ -1,0 +1,16 @@
+﻿@model MVCTutorial.Models.Lab
+@{
+    ViewBag.Title = "Lab";
+}
+<div class="row">
+    <div class="col-md-5">
+        <div class="jumbotron">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.TestName)
+            @Html.CheckBoxFor(m => m.Check)
+            @Html.DisplayFor(m => m.TestName)
+        </div>
+    </div>
+</div>
+
+

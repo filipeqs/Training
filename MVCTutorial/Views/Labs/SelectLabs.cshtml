@@ -1,0 +1,16 @@
+﻿@model MVCTutorial.Models.PatientLabViewModel
+
+@{
+    ViewBag.Title = "SelectLabs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SelectLabs</h2>
+<h3>@Model.Patient.Name</h3>
+@ViewBag.msg
+
+@using (@Html.BeginForm())
+{
+    @Html.EditorFor(m => m.Labs)
+    <input type="submit" value="Submit" class="btn btn-default" />
+}
