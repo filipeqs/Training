@@ -54,4 +54,39 @@
         </table>
     </div>
 
+    <div class="col-md-3">
+        <table class="table table-striped">
+            <tr>
+                <th>Hospital Name</th>
+            </tr>
+            @foreach (Hospital lab in (List<Hospital>)ViewBag.Hospitals)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(p => lab.Name)</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <tr>
+                <th>User Id</th>
+                <th>Contact</th>
+                <th>Page</th>
+                <th>Date</th>
+            </tr>
+            @foreach (Log log in Model.Logs)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(p => log.UserId)</td>
+                    <td>@Html.DisplayFor(p => log.UserName)</td>
+                    <td>@Html.DisplayFor(p => log.Page)</td>
+                    <td>@Html.DisplayFor(p => log.DateAccess)</td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>

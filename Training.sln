@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Threading", "Threading\Thre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCTutorial", "MVCTutorial\MVCTutorial.csproj", "{251FC461-F3A5-4502-84B4-8947C6E86A1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce", "Ecommerce\Ecommerce.csproj", "{8269BFC1-E9BE-48C1-87B3-21614672CFD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{251FC461-F3A5-4502-84B4-8947C6E86A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{251FC461-F3A5-4502-84B4-8947C6E86A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{251FC461-F3A5-4502-84B4-8947C6E86A1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8269BFC1-E9BE-48C1-87B3-21614672CFD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8269BFC1-E9BE-48C1-87B3-21614672CFD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8269BFC1-E9BE-48C1-87B3-21614672CFD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8269BFC1-E9BE-48C1-87B3-21614672CFD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

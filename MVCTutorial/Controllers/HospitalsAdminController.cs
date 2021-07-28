@@ -39,12 +39,14 @@ namespace MVCTutorial.Controllers
             var patients = db.Patient.ToList();
             var doctors = db.Doctor.ToList();
             var labs = db.Lab.ToList();
+            var logs = db.Log.ToList();
             ViewData["Hospitals"] = db.Hospital.ToList();
 
             dynamic d = new ExpandoObject();
             d.Patients = patients;
             d.Doctors = doctors;
             d.Labs = labs;
+            d.Logs = logs;
 
             return View(d);
         }
