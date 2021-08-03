@@ -8,8 +8,8 @@ namespace Ecommerce.Models
 {
     public class EcomContext : DbContext
     {
-        public DbSet<Category> Category { get; set; }
-        public DbSet<Product> Product { get; set; }
-        public DbSet<Sale> Sale { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Sale> Sales { get; set; }
     }
 }

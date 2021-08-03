@@ -14,5 +14,7 @@ namespace Ecommerce.Models
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
+
+        public string PhotoPath { get; set; }
     }
 }
