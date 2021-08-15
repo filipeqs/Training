@@ -1,0 +1,221 @@
+﻿@model WebDoctors.Models.EditAppointmentVM
+@using Microsoft.AspNetCore.Identity
+@using WebDoctors.Data
+@inject SignInManager<Person> SignInManager
+@inject UserManager<Person> UserManager
+
+@{
+    ViewData["Title"] = "Edit Appointment";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="PatientId" />
+                    <input type="hidden" asp-for="DoctorId" />
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Update Appointment</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <strong><i class="fas fa-user mr-1"></i> Type</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <select asp-for="AppointmentType" asp-items="Model.AppointmentTypes" class="form-control" id="appointmentTypeDropdown">
+                                        <option value="" disabled selected>Select A Type</option>
+                                    </select>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-user-nurse mr-1"></i> Select A Day</strong>
+                            <p class="text-muted">
+                                <div class="form-group" id="selectDay">
+                                    <input asp-for="AppointmentDay" class="form-control" id="selectDayCalendar" />
+                                    <span asp-validation-for="AppointmentDay" class="text-danger"></span>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-calendar mr-1"></i> Select A Time</strong>
+                            <p class="text-muted">
+                                <div class="form-group" id="selectTime">
+                                    <select asp-for="AppointmentTimeSelected" asp-items="Model.AppointmentTimes" class="form-control" id="selectTimeDropdown">
+                                        <option value="" disabled selected>Select A Time</option>
+                                    </select>
+                                </div>
+                            </p>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                            {
+                                <hr>
+                                <strong><i class="fas fa-money-bill mr-1"></i> Price</strong>
+                                <p class="text-muted">
+                                    <div class="form-group" id="selectDay">
+                                        <input asp-for="Price" class="form-control" id="selectDayCalendar" />
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+                                    </div>
+                                </p>
+
+                                <hr>
+                                <strong><i class="fas fa-file-alt mr-1"></i> Diagnosis</strong>
+                                <p class="text-muted">
+                                    <div class="form-group">
+                                        <input type="file" name="diagnosisFile" multiple class="form-control-file" />
+                                    </div>
+                                </p>
+
+                                <hr>
+                                <strong><i class="fas fa-file-alt mr-1"></i> Prescription</strong>
+                                <p class="text-muted">
+                                    <div class="form-group">
+                                        <input type="file" name="prescriptionFile" multiple class="form-control-file" />
+                                    </div>
+                                </p>
+
+                                <hr>
+                                <strong><i class="fas fa-file-alt mr-1"></i> Test Results</strong>
+                                <p class="text-muted">
+                                    <div class="form-group">
+                                        <input type="file" name="testResultsFile" multiple class="form-control-file" />
+                                    </div>
+                                </p>
+
+                                <hr>
+                                <strong><i class="fas fa-file-alt mr-1"></i> Diet Plan</strong>
+                                <p class="text-muted">
+                                    <div class="form-group">
+                                        <input type="file" name="dietPlanFile" multiple class="form-control-file" />
+                                    </div>
+                                </p>
+                            }
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+
+                    <div class="form-group" id="btnSubmit">
+                        <input type="submit" value="Update" class="btn btn-success btn-block" />
+                    </div>
+                </form>
+                <div>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+                    }
+                    else
+                    {
+                        <a asp-action="MyAppointments" class="btn btn-outline-secondary btn-block">Back to List</a>
+                    }
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">About Appointment</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.Patient)</strong>
+                        <p class="text-muted">
+                            @Html.DisplayFor(model => model.Patient.LastName), @Html.DisplayFor(model => model.Patient.FirstName)
+                        </p>
+
+                        <hr>
+                        <strong><i class="fas fa-user-nurse mr-1"></i> @Html.DisplayNameFor(model => model.Doctor)</strong>
+                        <p class="text-muted">@Html.DisplayFor(model => model.Doctor.LastName), @Html.DisplayFor(model => model.Doctor.FirstName)</p>
+
+                        <hr>
+                        <strong><i class="fas fa-calendar mr-1"></i> Appointment Date</strong>
+                        <p class="text-muted">@Model.AppointmentDay.ToString("MM/dd/yyyy") - @DateTime.Parse(Model.AppointmentTimeSelected).ToString("hh:mm tt")</p>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                        {
+                            if (!string.IsNullOrEmpty(Model.DiagnosisFilePath))
+                            {
+                                <hr>
+                                <strong><i class="fas fa-file mr-1"></i> Diagnosis</strong>
+                                <p class="text-muted">
+                                    <a target="_blank" href="@Model.DiagnosisFilePath">Download</a>
+                                </p>
+                            }
+                            if (!string.IsNullOrEmpty(Model.PrescriptionFilePath))
+                            {
+                                <hr>
+                                <strong><i class="fas fa-file mr-1"></i> Prescription</strong>
+                                <p class="text-muted">
+                                    <a target="_blank" href="@Model.PrescriptionFilePath">Download</a>
+                                </p>
+                            }
+                            if (!string.IsNullOrEmpty(Model.TestResultsFilePath))
+                            {
+                                <hr>
+                                <strong><i class="fas fa-file mr-1"></i> Test Results</strong>
+                                <p class="text-muted">
+                                    <a target="_blank" href="@Model.TestResultsFilePath">Download</a>
+                                </p>
+                            }
+                            if (!string.IsNullOrEmpty(Model.DietPlanFilePath))
+                            {
+                                <hr>
+                                <strong><i class="fas fa-file mr-1"></i> Diet Plan</strong>
+                                <p class="text-muted">
+                                    <a target="_blank" href="@Model.DietPlanFilePath">Download</a>
+                                </p>
+                            }
+                        }
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            const selectDayCalendar = $('#selectDayCalendar');
+            const selectTimeDropdown = $('#selectTimeDropdown');
+            const btnSubmitEl = $('#btnSubmit');
+
+            const doctorId = @Html.Raw(Json.Serialize(@Model.DoctorId));
+
+            selectDayCalendar.datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: new Date(),
+                onSelect: function (date) {
+                    selectTimeDropdown.empty()
+                    btnSubmitEl.hide()
+
+                    $.ajax({
+                        url: `/Appointments/GetAvailableTimes/${doctorId}/${date}`,
+                        method: 'Get'
+                    }).done(function (response) {
+                        if (!response) {
+                            selectTimeDropdown.append('<option disabled selected>Not Available</option>')
+                        } else {
+                            selectTimeDropdown.append('<option disabled selected>Select A Time</option>');
+                            response.forEach(function (time) {
+                                selectTimeDropdown.append(new Option(time.text, time.value));
+                            })
+                        }
+                        selectTimeDropdown.show()
+                    })
+                }
+            });
+
+            selectTimeDropdown.change(function () {
+                btnSubmitEl.show();
+            })
+        })
+    </script>
+}

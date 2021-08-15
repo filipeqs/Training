@@ -33,7 +33,13 @@ namespace Ecommerce.Controllers
             {
                 return HttpNotFound();
             }
-            return View(product);
+
+            var model = new ProductCartModel
+            {
+                Product = product
+            };
+
+            return View(model);
         }
 
         // GET: Products/Create
@@ -48,7 +54,7 @@ namespace Ecommerce.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,CategoryId,PhotoPath")] Product product)
+        public ActionResult Create([Bind(Include = "Id,Name,CategoryId,PhotoPath,Price")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -82,7 +88,7 @@ namespace Ecommerce.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,CategoryId,PhotoPath")] Product product)
+        public ActionResult Edit([Bind(Include = "Id,Name,CategoryId,PhotoPath,Price")] Product product)
         {
             if (ModelState.IsValid)
             {

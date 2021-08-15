@@ -13,7 +13,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebDoctors.Contracts;
 using WebDoctors.Data;
+using WebDoctors.Mapping;
 using WebDoctors.Repository;
+using Stripe;
+using WebDoctors.Services;
 
 namespace WebDoctors
 {
@@ -34,19 +37,29 @@ namespace WebDoctors
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddScoped<ISpecializationRepository, SpecializationRepository>();
-            services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddDefaultIdentity<Person>()
+            services.AddScoped<IImageUpload, ImageUpload>();
+            services.AddScoped<IFileUpload, FileUpload>();
+
+            // Email Settings Section
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, EmailSender>();
+
+            services.AddAutoMapper(typeof(Maps));
+
+            services.AddDefaultIdentity<WebDoctors.Data.Person>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<Person> userManager,
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<WebDoctors.Data.Person> userManager,
             RoleManager<IdentityRole> roleManager)
         {
+            StripeConfiguration.ApiKey = Configuration["Stripe:SecretKey"];
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

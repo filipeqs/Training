@@ -19,7 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormExample", "WebFormEx
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCCoreTutorial", "MVCCoreTutorial\MVCCoreTutorial.csproj", "{8A6C81B7-2276-4F79-BDD3-399164186B57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDoctors", "WebDoctors\WebDoctors.csproj", "{6FA8C785-003C-44A9-A592-E21C2AC28DBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebDoctors", "WebDoctors\WebDoctors.csproj", "{6FA8C785-003C-44A9-A592-E21C2AC28DBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiExample", "WebApiExample\WebApiExample.csproj", "{E90D024A-25CA-4B43-8BAF-C6CD950B5E9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "Calculator\Calculator.csproj", "{59C0CE06-D269-489D-8057-079570BBB55B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{6FA8C785-003C-44A9-A592-E21C2AC28DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FA8C785-003C-44A9-A592-E21C2AC28DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FA8C785-003C-44A9-A592-E21C2AC28DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E90D024A-25CA-4B43-8BAF-C6CD950B5E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E90D024A-25CA-4B43-8BAF-C6CD950B5E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E90D024A-25CA-4B43-8BAF-C6CD950B5E9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E90D024A-25CA-4B43-8BAF-C6CD950B5E9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59C0CE06-D269-489D-8057-079570BBB55B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C0CE06-D269-489D-8057-079570BBB55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59C0CE06-D269-489D-8057-079570BBB55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59C0CE06-D269-489D-8057-079570BBB55B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

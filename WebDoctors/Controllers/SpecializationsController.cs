@@ -10,30 +10,30 @@ using WebDoctors.Data;
 
 namespace WebDoctors.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Doctor")]
     public class SpecializationsController : Controller
     {
-        private readonly ISpecializationRepository _specializationRepository;
-        public SpecializationsController(ISpecializationRepository specializationRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public SpecializationsController(IUnitOfWork unitOfWork)
         {
-            _specializationRepository = specializationRepository;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: SpecializationsController
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var specializations = _specializationRepository.FindAll().ToList();
+            var specializations = await _unitOfWork.Specializations.FindAll();
 
             return View(specializations);
         }
 
         // GET: SpecializationsController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            if (!_specializationRepository.Exists(id))
+            if (!(await _unitOfWork.Specializations.Exists(q => q.Id == id)))
                 return NotFound();
 
-            var specialization = _specializationRepository.FindById(id);
+            var specialization = await _unitOfWork.Specializations.Find(q => q.Id == id);
 
             return View(specialization);
         }
@@ -48,20 +48,15 @@ namespace WebDoctors.Controllers
         // POST: SpecializationsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Specialization specialization)
+        public async Task<ActionResult> Create(Specialization specialization)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View(specialization);
 
-                var isSuccess = _specializationRepository.Create(specialization);
-
-                if (!isSuccess)
-                {
-                    ModelState.AddModelError("", "Something went wrong...");
-                    return View(specialization);
-                }
+                await _unitOfWork.Specializations.Create(specialization);
+                await _unitOfWork.Save();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -73,12 +68,12 @@ namespace WebDoctors.Controllers
         }
 
         // GET: SpecializationsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            if (!_specializationRepository.Exists(id))
+            if (!(await _unitOfWork.Specializations.Exists(q => q.Id == id)))
                 return NotFound();
 
-            var specialization = _specializationRepository.FindById(id);
+            var specialization = await _unitOfWork.Specializations.Find(q => q.Id == id);
 
             return View(specialization);
         }
@@ -86,27 +81,23 @@ namespace WebDoctors.Controllers
         // POST: SpecializationsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Specialization specialization)
+        public async Task<ActionResult> Edit(Specialization specialization)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View();
 
-                if (!_specializationRepository.Exists(specialization.Id))
+                if (!(await _unitOfWork.Specializations.Exists(q => q.Id == specialization.Id)))
                     return NotFound();
 
-                var specializationFromDb = _specializationRepository.FindById(specialization.Id);
+                var specializationFromDb = await _unitOfWork.Specializations.Find(q => q.Id == specialization.Id);
                 specializationFromDb.Name = specialization.Name;
                 specializationFromDb.Description = specialization.Description;
+                specializationFromDb.Featured = specialization.Featured;
 
-                var isSuccess = _specializationRepository.Update(specializationFromDb);
-
-                if (!isSuccess)
-                {
-                    ModelState.AddModelError("", "Something went wrong...");
-                    return View(specialization);
-                }
+                _unitOfWork.Specializations.Update(specializationFromDb);
+                await _unitOfWork.Save();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -117,12 +108,12 @@ namespace WebDoctors.Controllers
         }
 
         // GET: SpecializationsController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            if (!_specializationRepository.Exists(id))
+            if (!(await _unitOfWork.Specializations.Exists(q => q.Id == id)))
                 return NotFound();
 
-            var specialization = _specializationRepository.FindById(id);
+            var specialization = await _unitOfWork.Specializations.Find(q => q.Id == id);
 
             return View(specialization);
         }
@@ -130,22 +121,17 @@ namespace WebDoctors.Controllers
         // POST: SpecializationsController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteAction(int id)
+        public async Task<ActionResult> DeleteAction(int id)
         {
             try
             {
-                if (!_specializationRepository.Exists(id))
+                if (!(await _unitOfWork.Specializations.Exists(q => q.Id == id)))
                     return NotFound();
 
-                var specialization = _specializationRepository.FindById(id);
+                var specialization = await _unitOfWork.Specializations.Find(q => q.Id == id);
 
-                var isSuccess = _specializationRepository.Delete(specialization);
-
-                if (!isSuccess)
-                {
-                    ModelState.AddModelError("", "Something went wrong...");
-                    return View(specialization);
-                }
+                _unitOfWork.Specializations.Delete(specialization);
+                await _unitOfWork.Save();
 
                 return RedirectToAction(nameof(Index));
             }

@@ -1,0 +1,82 @@
+﻿@model WebDoctors.Models.DoctorVM
+
+@{
+    Layout = "_AdminLTELanding";
+    ViewData["Title"] = "AboutDoctor";
+}
+
+<div class="container pt-4">
+    <div class="card card-primary">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                            <img class="img-fluid" src="@Model.ImagePath" alt="User profile picture">
+                            <ul class="list-group list-group-unbordered mb-3">
+                                <li class="list-group-item">
+                                    <b>Phone</b> <span class="float-right">@Model.Person.PhoneNumber</span>
+                                </li>
+                            </ul>
+                </div>
+                <div class="col-md-3">
+                    <h1>@Model.Person.FirstName @Model.Person.LastName</h1>
+                    <h4>Overview</h4>
+                    <div>
+                        <strong> Speciality</strong>
+                        <p class="text-muted">
+                            @Model.Specialization.Name
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <h4>Description</h4>
+                    <p class="text-muted">
+                        @Model.Description
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.YoutubeVideo)) {     
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary" id="youtubeVideo">
+                    <div class="card-body">
+                        <div class="video-container" id="video">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const youtubeVideo = @Html.Raw(Json.Serialize(@Model.YoutubeVideo));
+            const videoEl = $('#video');
+
+            const getId = (url) => {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+
+                return (match && match[2].length === 11)
+                    ? match[2]
+                    : null;
+            }
+
+            const appendVideo = (url) => {
+                const videoId = getId(url);
+
+                const iframeMarkup = '<iframe class="video-iframe" src="//www.youtube.com/embed/'
+                    + videoId + '" frameborder="0" allowfullscreen></iframe>';
+
+                videoEl.append(iframeMarkup);
+            }
+
+            if (youtubeVideo) {
+                appendVideo(youtubeVideo)
+            }
+        })
+    </script>
+}

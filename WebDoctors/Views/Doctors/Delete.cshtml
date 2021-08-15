@@ -1,0 +1,45 @@
+﻿@model WebDoctors.Models.DoctorVM
+
+@{
+    ViewData["Title"] = "Delete Doctor";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <div class="card card-danger">
+            <div class="card-header">
+                <h3 class="card-title">Delete Doctor</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.FirstName)</strong>
+
+                <p class="text-muted">
+                    @Html.DisplayFor(model => model.FirstName)
+                </p>
+
+                <hr>
+
+                <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.LastName)</strong>
+
+                <p class="text-muted">@Html.DisplayFor(model => model.LastName)</p>
+
+                <hr>
+
+                <strong><i class="fas fa-birthday-cake mr-1"></i> @Html.DisplayNameFor(model => model.DateOfBirth)</strong>
+
+                <p class="text-muted">
+                    @Model.DateOfBirth.ToString("MM/dd/yyyy")
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger btn-block" />
+            <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+        </form>
+    </div>
+</div>

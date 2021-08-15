@@ -1,4 +1,4 @@
-﻿@model Ecommerce.Models.Product
+﻿@model Ecommerce.Models.ProductCartModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,32 +11,59 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
+            @Html.DisplayNameFor(model => model.Product.Category.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Category.Name)
+            @Html.DisplayFor(model => model.Product.Category.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Product.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Price)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PhotoPath)
+            @Html.DisplayNameFor(model => model.Product.PhotoPath)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PhotoPath)
+            @Html.DisplayFor(model => model.Product.PhotoPath)
         </dd>
+        @using (Html.BeginForm("AddToCart", "Carts"))
+        {
+            @Html.HiddenFor(model => model.Product.Id)
+            @Html.HiddenFor(model => model.Product.Price)
 
+            <div class="form-group">
+                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Add to Cart" class="btn btn-default" />
+                </div>
+            </div>
+        }
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Product.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

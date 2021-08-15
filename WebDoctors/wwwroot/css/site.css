@@ -1,71 +1,92 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿.jumbotron-main {
+    background-image: url("../uploads/home.jpg");
+    background-size: cover;
+    padding: 15rem 2rem;
+    margin-bottom: 0;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+.jumbotron-main h1 {
+    color: #003a70;
+    font-size: 2.5rem;
+    font-weight: bold;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.jumbotron-main .lead {
+    width: 40%;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    font-weight: 400;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.jumbotron-secondary {
+    background-image: url("../uploads/home2.jpg");
+    background-size: cover;
+    padding: 10rem 2rem;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.jumbotron-secondary h1 {
+    color: #00a9e0;
+    font-size: 2.5rem;
+    font-weight: 400;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.jumbotron-secondary .lead {
+    width: 40%;
+    font-size: 1.5rem;
+    line-height: 1.4;
+    font-weight: 400;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.jumbotron-assistance {
+    text-align: center;
+    background: #00a9e0;
+    color: white;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+.jumbotron-assistance h1 {
+    font-size: 2.5rem;
+    font-weight: 400;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+.jumbotron-assistance .lead {
+    font-size: 1.2rem;
+    font-weight: 400;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+.card-comments .learnmore {
+    color: #00a9e0;
+}
+
+.home-card {
+    box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%), 0 0 0 1px rgb(10 10 10 / 2%);
+}
+
+.home-cards {
+    background: #00a9e0;
+}
+
+.home-cards .container {
+    position: relative;
+    top: -15px
+}
+
+.home-contact {
+    margin-bottom: 0;
+}
+
+.video-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+}
+
+.video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
 }

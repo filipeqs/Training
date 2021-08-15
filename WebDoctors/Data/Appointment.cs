@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,13 +10,18 @@ namespace WebDoctors.Data
     {
         public int Id { get; set; }
 
-        public Person Person { get; set; }
-        public int PersonId { get; set; }
+        public Person Patient { get; set; }
+        [ForeignKey("Person")]
+        public string PatientId { get; set; }
 
-        public Specialization Specialization { get; set; }
-        public int SpecializationId { get; set; }
+        public Doctor Doctor { get; set; }
+        [ForeignKey("Doctor")]
+        public int DoctorId { get; set; }
 
-        public DateTime AppointmentTime { get; set; }
+        public DateTime AppointmentDay { get; set; }
+        public TimeSpan AppointmentTime { get; set; }
+
+        public int AppointmentType { get; set; }
 
         public string DiagnosisFilePath { get; set; }
 
@@ -24,5 +30,11 @@ namespace WebDoctors.Data
         public string TestResultsFilePath { get; set; }
 
         public string DietPlanFilePath { get; set; }
+
+        public bool Cancelled { get; set; }
+        public bool Completed { get; set; }
+        public float Price { get; set; }
+        public bool IsPaid { get; set; }
+        public string TransactionId { get; set; }
     }
 }

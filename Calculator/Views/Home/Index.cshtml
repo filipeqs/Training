@@ -1,0 +1,196 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="col-md-4 card">
+    <div class="container mt-3 mb-3">
+        <div class="row mb-3">
+            <div class="col-sm-12">
+                <input type="text" id="calculator__screen" class="form-control" value="0" disabled />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="7">7</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="8">8</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="9">9</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-dark btn-block calculator__keys operator" value="/">&divide;</button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="4">4</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="5">5</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="6">6</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-dark btn-block calculator__keys operator" value="+">+</button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="1">1</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="2">2</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="3">3</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-dark btn-block calculator__keys operator" value="-">-</button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value="0">0</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-secondary btn-block calculator__keys" value=".">.</button>
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-dark btn-block calculator__keys operator" value="*">&times;</button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-danger btn-block calculator__keys" value="clear">AC</button>
+            </div>
+
+            <div class="col-sm-6">
+                <button type="button" class="btn btn-success btn-block calculator__keys operator" value="=">=</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var screenEl = $('#calculator__screen');
+            let calculator = {
+                display: "0",
+                firstOperand: null,
+                operator: '',
+                watingSecondOperand: false,
+            };
+
+            const inputDigit = (digit) => {
+                const { display, watingSecondOperand } = calculator;
+
+                if (watingSecondOperand === true) {
+                    calculator.display = digit;
+                    calculator.watingSecondOperand = false;
+                } else {
+                    calculator.display = display === '0' ? digit : display + digit;
+                }
+            }
+
+            const inputDecimal = (dot) => {
+                if (!calculator.display.includes(dot)) {
+                    calculator.display += dot;
+                }
+            }
+
+            const displayValue = () => {
+                screenEl.val(calculator.display);
+            }
+
+            const getResultAsync = (url, data) => {
+                return $.ajax({
+                    url: url,
+                    data: data,
+                }).done(function (response) {
+                    result = response
+                })
+            }
+
+            const setOperator = async (nextOperator) => {
+                const { display, watingSecondOperand, firstOperand, operator } = calculator;
+                const inputValue = parseFloat(display);
+
+                if (operator && watingSecondOperand) {
+                    calculator.operator = nextOperator;
+                    calculator.display = display.substring(0, display.length - 1);
+                    if (nextOperator != '=')
+                        calculator.display += nextOperator;
+                    return;
+                }
+
+                if (firstOperand == null) {
+                    calculator.firstOperand = inputValue;
+                } else if (operator) {
+                    const currentValue = firstOperand || 0;
+                    if (calculator.operator == "/")
+                        calculator.operator = "devide";
+
+                    const result = await getResultAsync(`api/Calculator/Calculate`, { operatorValue: calculator.operator, firstOperand: currentValue, secondOperand: inputValue})
+
+                    calculator.display = String(result)
+                    calculator.firstOperand = result;
+                }
+
+                if (nextOperator != '=')
+                    calculator.display += nextOperator;
+
+                calculator.watingSecondOperand = true;
+                calculator.operator = nextOperator;
+            }
+
+            const reset = () => {
+                calculator.display = "0";
+                calculator.firstOperand = null,
+                calculator.operator = '',
+                calculator.watingSecondOperand = false
+            }
+
+            $('.calculator__keys').click(async (e) => {
+                const target = e.target;
+
+                if (target.value) {
+                    if (target.classList.contains('operator')) {
+                        await setOperator(target.value);
+                        displayValue();
+                    }
+                    else if (target.value == 'clear') {
+                        reset();
+                        displayValue();
+                    }
+                    else if (target.value == ".") {
+                        inputDecimal(target.value);
+                        displayValue();
+                    }
+                    else {
+                        inputDigit(target.value);
+                        displayValue();
+                    }
+                }
+            })
+        })
+    </script>
+}

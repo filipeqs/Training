@@ -22,3 +22,18 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.cart-icon {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    background: white;
+    color: black;
+    border-radius: 100px;
+    width: 20px;
+    text-align: center;
+    left: 25px;
+    top: 6px;
+}

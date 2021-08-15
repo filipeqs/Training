@@ -13,7 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var message = 'Hello World';
+var message = "Hello World";
 console.log(message);
 var Greetings = /** @class */ (function () {
     function Greetings(name) {
@@ -24,10 +24,10 @@ var Greetings = /** @class */ (function () {
     };
     return Greetings;
 }());
-var filipe = new Greetings('Filipe');
+var filipe = new Greetings("Filipe");
 filipe.greet();
 // Type Assertion
-var str = '1';
+var str = "1";
 var str2 = str;
 console.log(typeof str2);
 // Scopes
@@ -55,8 +55,8 @@ function displayDetails(id, name, email) {
     if (email != null)
         console.log("EMAIL: " + email);
 }
-displayDetails(123, 'John');
-displayDetails(111, 'mary', 'mary@xyz.com');
+displayDetails(123, "John");
+displayDetails(111, "mary", "mary@xyz.com");
 // Rest Paramenter
 function addNumbers() {
     var numbers = [];
@@ -83,8 +83,8 @@ function display(x, y) {
     console.log(x);
     console.log(y);
 }
-display('abc');
-display(1, 'xyz');
+display("abc");
+display(1, "xyz");
 // Array
 var nums = [1, 2, 3, 4];
 // Array Destructuring
@@ -95,12 +95,12 @@ console.log(y);
 // Union Type Variable
 var unionVal;
 unionVal = 12;
-console.log('numeric value of val ' + unionVal);
-unionVal = 'This is a string';
-console.log('string value of val ' + unionVal);
+console.log("numeric value of val " + unionVal);
+unionVal = "This is a string";
+console.log("string value of val " + unionVal);
 // Union Type and function parameter
 function unionDispla(name) {
-    if (typeof name == 'string') {
+    if (typeof name == "string") {
         console.log(name);
     }
     else {
@@ -110,26 +110,26 @@ function unionDispla(name) {
         }
     }
 }
-unionDispla('mark');
-console.log('Printing names array....');
-unionDispla(['Mark', 'Tom', 'Mary', 'John']);
+unionDispla("mark");
+console.log("Printing names array....");
+unionDispla(["Mark", "Tom", "Mary", "John"]);
 var customer = {
-    firstName: 'Tom',
-    lastName: 'Hanks',
+    firstName: "Tom",
+    lastName: "Hanks",
     sayHi: function () {
-        return 'Hi there';
+        return "Hi there";
     }
 };
-console.log('Customer Object ');
+console.log("Customer Object ");
 console.log(customer.firstName);
 console.log(customer.lastName);
 console.log(customer.sayHi());
 var drumer = {
-    firstName: 'Tom',
-    lastName: 'Hanks',
-    instrument: 'Drums',
+    firstName: "Tom",
+    lastName: "Hanks",
+    instrument: "Drums",
     sayHi: function () {
-        return 'Hi there';
+        return "Hi there";
     }
 };
 //  Class Inheritance
@@ -145,7 +145,7 @@ var Circle = /** @class */ (function (_super) {
         return _super.call(this, a) || this;
     }
     Circle.prototype.disp = function () {
-        console.log('Area of the circle:  ' + this.Area);
+        console.log("Area of the circle:  " + this.Area);
     };
     return Circle;
 }(Shape));
@@ -156,7 +156,7 @@ var Printer = /** @class */ (function () {
     function Printer() {
     }
     Printer.prototype.doPrint = function () {
-        console.log('Printing from printer!');
+        console.log("Printing from printer!");
     };
     return Printer;
 }());
@@ -166,7 +166,7 @@ var StringPrinter = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     StringPrinter.prototype.doPrint = function () {
-        console.log('Printing from String Printer');
+        console.log("Printing from String Printer");
     };
     return StringPrinter;
 }(Printer));
@@ -176,3 +176,12 @@ printer.doPrint();
 var stringPrinter = new StringPrinter();
 var isPrinter = stringPrinter instanceof StringPrinter;
 console.log("obj is an instance of StringPrinter: " + isPrinter);
+var AgriLoan = /** @class */ (function () {
+    function AgriLoan(interest, rebate) {
+        this.interest = interest;
+        this.rebate = rebate;
+    }
+    return AgriLoan;
+}());
+var objAgriLoan = new AgriLoan(10, 1);
+console.log("Interest is : " + objAgriLoan.interest + " Rebate is : " + objAgriLoan.rebate + " ");

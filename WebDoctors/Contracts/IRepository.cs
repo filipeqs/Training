@@ -1,24 +1,31 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace WebDoctors.Contracts
 {
     public interface IRepository<T> where T : class
     {
-        ICollection<T> FindAll();
+        Task<IList<T>> FindAll(
+                Expression<Func<T, bool>> expression = null,
+                Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null
+            );
 
-        T FindById(int id);
+        Task<T> Find(
+                Expression<Func<T, bool>> expression = null,
+                Func<IQueryable<T>, IIncludableQueryable<T, object>> includes = null
+            );
 
-        bool Exists(int id);
+        Task<bool> Exists(Expression<Func<T, bool>> expression);
 
-        bool Create(T entity);
+        Task Create(T entity);
 
-        bool Update(T entity);
+        void Update(T entity);
 
-        bool Delete(T entity);
-
-        bool Save();
+        void Delete(T entity);
     }
 }

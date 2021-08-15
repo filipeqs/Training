@@ -184,7 +184,9 @@
     <Compile Include="CategoryWebForm.aspx.designer.cs">
       <DependentUpon>CategoryWebForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartsController.cs" />
     <Compile Include="Controllers\Categories1Controller.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -210,13 +212,28 @@
     <Compile Include="Migrations\202107301434551_InitialMigration.Designer.cs">
       <DependentUpon>202107301434551_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108111517274_CartAndCartItemsTable.cs" />
+    <Compile Include="Migrations\202108111517274_CartAndCartItemsTable.Designer.cs">
+      <DependentUpon>202108111517274_CartAndCartItemsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108111814452_CartIdToCartItem.cs" />
+    <Compile Include="Migrations\202108111814452_CartIdToCartItem.Designer.cs">
+      <DependentUpon>202108111814452_CartIdToCartItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202108111828314_PriceToProduct.cs" />
+    <Compile Include="Migrations\202108111828314_PriceToProduct.Designer.cs">
+      <DependentUpon>202108111828314_PriceToProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\EcomContext.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ProductCartModel.cs" />
     <Compile Include="Models\Sale.cs" />
     <Compile Include="ProductGridView.aspx.cs">
       <DependentUpon>ProductGridView.aspx</DependentUpon>
@@ -310,6 +327,7 @@
     <Content Include="Views\Products\Details.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Carts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -333,6 +351,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107301434551_InitialMigration.resx">
       <DependentUpon>202107301434551_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108111517274_CartAndCartItemsTable.resx">
+      <DependentUpon>202108111517274_CartAndCartItemsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108111814452_CartIdToCartItem.resx">
+      <DependentUpon>202108111814452_CartIdToCartItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108111828314_PriceToProduct.resx">
+      <DependentUpon>202108111828314_PriceToProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

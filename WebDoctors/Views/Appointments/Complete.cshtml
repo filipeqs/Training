@@ -1,0 +1,47 @@
+﻿@model WebDoctors.Models.AppointmentVM
+
+@{
+    ViewData["Title"] = "Complete Appointment";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <div class="card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Complete Appointment</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.Patient)</strong>
+
+                <p class="text-muted">
+                    @Html.DisplayFor(model => model.Patient.LastName), @Html.DisplayFor(model => model.Patient.FirstName)
+                </p>
+
+                <hr>
+
+                <strong><i class="fas fa-user-nurse mr-1"></i> @Html.DisplayNameFor(model => model.Doctor)</strong>
+
+                <p class="text-muted">@Html.DisplayFor(model => model.Doctor.Person.LastName), @Html.DisplayFor(model => model.Doctor.Person.FirstName)</p>
+
+                <hr>
+
+                <strong><i class="fas fa-calendar mr-1"></i> Appointment Date</strong>
+
+                <p class="text-muted">
+                    @Model.AppointmentDay.ToString("MM/dd/yyyy") - @DateTime.Today.Add(Model.AppointmentTime).ToString("hh:mm tt") - @Html.DisplayFor(model => model.AppointmentTypeName)
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+
+        <form asp-action="Complete">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Complete" class="btn btn-success btn-block" />
+            </div>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+        </form>
+    </div>
+</div>

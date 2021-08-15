@@ -1,0 +1,123 @@
+﻿@page
+@model DoctorProfileModel
+@{
+    ViewData["Title"] = "Doctor Profile";
+    ViewData["ActivePage"] = ManageNavPages.DoctorProfile;
+}
+
+<hr/>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Input.Id" />
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Update Doctor</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <strong><i class="fas fa-user-md mr-1"></i> Specialization</strong>
+                    <p class="text-muted">
+                        <div class="form-group">
+                            <select asp-for="Input.SpecializationId" asp-items="Model.Specializations" class="form-control">
+                                <option value="">Select Specialization</option>
+                            </select>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-money-bill mr-1"></i> Consultation Fee</strong>
+                    <p class="text-muted">
+                        <div class="form-group">
+                            <input asp-for="Input.ConsultationFee" class="form-control" placeholder="Consultation Fee">
+                            <span asp-validation-for="Input.ConsultationFee" class="text-danger"></span>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fab fa-youtube mr-1"></i> Youtube Video</strong>
+                    <p class="text-muted">
+                        <div class="form-group">
+                            <input asp-for="Input.YoutubeVideo" class="form-control" placeholder="Youtube Video">
+                            <span asp-validation-for="Input.YoutubeVideo" class="text-danger"></span>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-book mr-1"></i> Description</strong>
+                    <p class="text-muted">
+                        <div class="form-group">
+                            <textarea asp-for="Input.Description" class="form-control" placeholder="Description" rows="5"></textarea>
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-image mr-1"></i> Add/Change Profile Image</strong>
+                    <p class="text-muted">
+                        <div class="form-group">
+                            <input type="file" name="image" multiple id="imageFile" class="form-control-file" />
+                        </div>
+                    </p>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <button id="update-doctor-profile-button" type="submit" class="btn btn-success btn-block">Update</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        @if (!string.IsNullOrWhiteSpace(Model.ImagePath))
+        {
+            <div class="card card-primary">
+                <div class="card-body">
+                    <img src="@Model.ImagePath" alt="Doctor Image" width="100%" />
+                </div>
+            </div>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Input.YoutubeVideo))
+        {
+            <div class="card card-primary" id="youtubeVideo">
+                <div class="card-body">
+                    <div class="video-container" id="video">
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+            $(document).ready(function () {
+            const youtubeVideo = @Html.Raw(Json.Serialize(@Model.Input.YoutubeVideo));
+            const videoEl = $('#video');
+
+            const getId = (url) => {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+
+                return (match && match[2].length === 11)
+                    ? match[2]
+                    : null;
+            }
+
+            const appendVideo = (url) => {
+                const videoId = getId(url);
+
+                const iframeMarkup = '<iframe class="video-iframe" src="//www.youtube.com/embed/'
+                    + videoId + '" frameborder="0" allowfullscreen></iframe>';
+
+                videoEl.append(iframeMarkup);
+            }
+
+            if (youtubeVideo) {
+                appendVideo(youtubeVideo)
+            }
+        })
+    </script>
+}

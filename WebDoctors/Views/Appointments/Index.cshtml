@@ -1,0 +1,85 @@
+﻿@model IEnumerable<WebDoctors.Models.AppointmentVM>
+
+@{
+    ViewData["Title"] = "Appointments";
+}
+
+<h1>Appointments</h1>
+<hr/>
+<table id="tblData" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Doctor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentDay)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentTime)
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.LastName), @Html.DisplayFor(modelItem => item.Patient.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.Person.LastName), @Html.DisplayFor(modelItem => item.Doctor.Person.FirstName)
+            </td>
+            <td>
+                @item.AppointmentDay.ToString("MM/dd/yyyy")
+            </td>
+            <td>
+                @DateTime.Today.Add(item.AppointmentTime).ToString("hh:mm tt")
+            </td>
+            <td>
+                @if (item.Cancelled)
+                {
+                    <span class="badge badge-danger">Cancelled</span>
+                }
+                else if (item.Completed)
+                {
+                    <span class="badge badge-success">Completed</span>
+                }
+                else
+                {
+                    <span class="badge badge-warning">Pending</span>
+                }
+            </td>
+            <td>
+                @if (!item.Cancelled && !item.Completed)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-secondary" title="Edit">
+                        <i class="fa fa-edit" aria-hidden="true"></i>
+                    </a>
+                }
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info" title="Details">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </a>
+                @if (!item.Completed && !item.Cancelled)
+                {
+                    <a asp-action="Complete" asp-route-id="@item.Id" class="btn btn-success" title="Complete">
+                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                    </a>
+                }
+                @if (!item.Cancelled && !item.Completed)
+                {
+                    <a asp-action="Cancel" asp-route-id="@item.Id" class="btn btn-danger" title="Cancel">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    </a>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,46 +1,147 @@
 ﻿@model WebDoctors.Models.EditDoctorVM
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Doctor";
 }
 
-<h1>Edit</h1>
-
-<h4>EditDoctorVM</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+    <div class="col-md-12">
+        <hr/>
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ImagePath" />
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Update Doctor</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <strong><i class="fas fa-user mr-1"></i> First Name</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-user mr-1"></i> Last Name</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-birthday-cake mr-1"></i> Date Of Birth</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <input asp-for="DateOfBirth" class="form-control" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-money-bill mr-1"></i> Consultation Fee</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <input asp-for="ConsultationFee" class="form-control" />
+                                    <span asp-validation-for="ConsultationFee" class="text-danger"></span>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-user-md mr-1"></i> Specialization</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <select asp-for="SpecializationId" asp-items="Model.Specializations" class="form-control">
+                                        <option value="">Select Specialization</option>
+                                    </select>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fab fa-youtube mr-1"></i> Youtube Video</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <input asp-for="YoutubeVideo" class="form-control" />
+                                    <span asp-validation-for="YoutubeVideo" class="text-danger"></span>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-image mr-1"></i> Add/Change Profile Image</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <input type="file" name="image" multiple id="imageFile" class="form-control-file" />
+                                </div>
+                            </p>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-success btn-block" />
+                    </div>
+                </form>
+                <div>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+            <div class="col-md-6">
+                @if (!string.IsNullOrWhiteSpace(Model.ImagePath))
+                {
+                    <div class="card card-primary">
+                        <div class="card-body">
+                            <img src="@Model.ImagePath" alt="@Model.LastName" width="100%" />
+                        </div>
+                    </div>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.YoutubeVideo))
+                {
+                    <div class="card card-primary" id="youtubeVideo">
+                        <div class="card-body">
+                            <div class="video-container" id="video">
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <select asp-for="SpecializationId" asp-items="Model.Specializations" class="form-control">
-                    <option value="">Select Specialization</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const youtubeVideo = @Html.Raw(Json.Serialize(@Model.YoutubeVideo));
+            const videoEl = $('#video');
 
+            const getId = (url) => {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+
+                return (match && match[2].length === 11)
+                    ? match[2]
+                    : null;
+            }
+
+            const appendVideo = (url) => {
+                const videoId = getId(url);
+
+                const iframeMarkup = '<iframe class="video-iframe" src="//www.youtube.com/embed/'
+                    + videoId + '" frameborder="0" allowfullscreen></iframe>';
+
+                videoEl.append(iframeMarkup);
+            }
+
+            if (youtubeVideo) {
+                appendVideo(youtubeVideo)
+            }
+        })
+    </script>
+}

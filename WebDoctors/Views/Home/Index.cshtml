@@ -1,8 +1,138 @@
-﻿@{
+﻿@model HomeVM
+@{
+    Layout = "_AdminLTELanding";
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="jumbotron jumbotron-main">
+    <h1 class="display-4">Welcome to WebDoctors</h1>
+    <p class="lead">
+        Admin: admin@email.com/P@ssword1
+       <br/>Doctor: arold@email.com/P@ssword1
+        <br/>Patient: Register
+    </p>
+    <p class="lead">
+        <a class="btn btn-outline-primary btn-lg" href="#" role="button">Learn more</a>
+    </p>
 </div>
+<div class="jumbotron jumbotron-assistance">
+    <h1 class="display-4">Need assistance or have questions?</h1>
+    <p class="lead">Call us at (000) 000-0000</p>
+</div>
+<div class="container">
+    <div class="jumbotron jumbotron-secondary">
+        <h1 class="display-4">We Take Care of All</h1>
+        <p class="lead">
+            Sign up and make an Appointment right away. We have all specialities that you need. 
+            Go to about page for more details!
+        </p>
+    </div>
+</div>
+<div class="home-cards">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.Specializations)
+            {
+                <div class="col-md-6">
+                    <div class="card card-widget home-card">
+                        <div class="card-footer card-comments">
+                            <div class="card-comment">
+                                <div class="comment-text">
+                                    <span class="username">
+                                        @item.Name
+                                    </span>
+                                    @item.Description
+                                </div>
+                            </div>
+                            @*<div class="card-comment">
+                                <div class="comment-text">
+                                    <a href="#" class="learnmore">
+                                        Learn More About @item.Name
+                                    </a>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- Default box -->
+<div class="card home-contact">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-5 text-center d-flex align-items-center justify-content-center">
+                <div class="">
+                    <h2>Web<strong>Doctors</strong></h2>
+                    <p class="lead mb-5">
+                        123 Testing Ave, Testtown, 9876 NA<br>
+                        Phone: +1 234 56789012
+                    </p>
+                </div>
+            </div>
+            <form class="col-md-7" asp-action="SendEmail" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label for="inputName">Name</label>
+                    <input asp-for="Name" class="form-control">
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail">E-Mail</label>
+                    <input asp-for="FromEmail" class="form-control">
+                    <span asp-validation-for="FromEmail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="inputSubject">Subject</label>
+                    <input type="text" asp-for="Subject" class="form-control">
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="inputMessage">Message</label>
+                    <textarea asp-for="Message" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Send message">
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr/>
+    <h3 class="text-center">Connect With Us</h3>
+    <div class="mt-2 mb-4 product-share d-flex align-items-center justify-content-center">
+        <a href="#" class="text-gray ">
+            <i class="fab fa-facebook-square fa-5x" style="color: #4267B2"></i>
+        </a>
+        <a href="#" class="text-gray">
+            <i class="fab fa-twitter-square fa-5x" style="color: #1DA1F2"></i>
+        </a>
+        <a href="#" class="text-gray">
+            <i class="fas fa-envelope-square fa-5x" style="color: #f1d592"></i>
+        </a>
+        <a href="#" class="text-gray">
+            <i class="fas fa-rss-square fa-5x" style="color: #ee802f"></i>
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var model = @Html.Raw(Json.Serialize(@Model));
+
+        if (model.isAuthenticated && model.appointment) {
+            var appointment = model.appointment;
+            var patient = appointment.patient;
+            var appointmentDay = moment(appointment.appointmentDay).format('MM/DD/YYYY');
+            var time = `${appointment.appointmentTime.hours}:${appointment.appointmentTime.minutes}:${appointment.appointmentTime.seconds}`
+            var appointmentTime = moment(time, "HH:mm:ss").format("hh:mm A");
+
+            toastr.success(`<strong>Hello ${patient.firstName} ${patient.lastName}</strong>
+                            <br/>
+                            Your next appointment is on ${appointmentDay} at ${appointmentTime}
+                            <br/>
+                            Go to your appoinments page for more details`)
+        }
+    </script>
+}

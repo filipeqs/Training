@@ -1,42 +1,103 @@
 ﻿@model WebDoctors.Models.DoctorVM
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Doctor Details";
 }
 
-<h1>Details</h1>
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Doctor Details</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.FirstName)</strong>
+                        <p class="text-muted">
+                            @Html.DisplayFor(model => model.FirstName)
+                        </p>
+                        <hr>
+                        <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.LastName)</strong>
+                        <p class="text-muted">@Html.DisplayFor(model => model.LastName)</p>
 
-<div>
-    <h4>DoctorVM</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecializationName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpecializationName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfBirth)
-        </dd>
-    </dl>
+                        <hr>
+                        <strong><i class="fas fa-user-md mr-1"></i> @Html.DisplayNameFor(model => model.SpecializationName)</strong>
+                        <p class="text-muted">
+                            @Html.DisplayFor(model => model.SpecializationName)
+                        </p>
+
+                        <hr>
+                        <strong><i class="fas fa-birthday-cake mr-1"></i> @Html.DisplayNameFor(model => model.DateOfBirth)</strong>
+                        <p class="text-muted">@Model.DateOfBirth.ToString("MM/dd/yyyy")</p>
+
+                        <hr>
+                        <strong><i class="fas fa-money-bill mr-1"></i> @Html.DisplayNameFor(model => model.ConsultationFee)</strong>
+                        <p class="text-muted">@Html.DisplayFor(model => model.ConsultationFee)</p>
+
+                        <hr>
+                        <strong><i class="fas fa-clock mr-1"></i> @Html.DisplayNameFor(model => model.Schedule.ConsultationTime)</strong>
+                        <p class="text-muted">@TimeSpan.Parse(Model.Schedule.ConsultationTime).ToString(@"hh\:mm") hours</p>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success btn-block">Edit</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                @if (!string.IsNullOrWhiteSpace(Model.ImagePath))
+                {
+                    <div class="card card-primary">
+                        <div class="card-body">
+                            <img src="@Model.ImagePath" alt="@Model.LastName" width="100%" />
+                        </div>
+                    </div>
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.YoutubeVideo))
+                {
+                    <div class="card card-primary" id="youtubeVideo">
+                        <div class="card-body">
+                            <div class="video-container" id="video">
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const youtubeVideo = @Html.Raw(Json.Serialize(@Model.YoutubeVideo));
+            const videoEl = $('#video');
+
+            const getId = (url) => {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const match = url.match(regExp);
+
+                return (match && match[2].length === 11)
+                    ? match[2]
+                    : null;
+            }
+
+            const appendVideo = (url) => {
+                const videoId = getId(url);
+
+                const iframeMarkup = '<iframe class="video-iframe" src="//www.youtube.com/embed/'
+                    + videoId + '" frameborder="0" allowfullscreen></iframe>';
+
+                videoEl.append(iframeMarkup);
+            }
+
+            if (youtubeVideo) {
+                appendVideo(youtubeVideo)
+            }
+        })
+    </script>
+}

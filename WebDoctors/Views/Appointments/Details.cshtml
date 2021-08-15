@@ -1,0 +1,149 @@
+﻿@model WebDoctors.Models.AppointmentVM
+@using Microsoft.AspNetCore.Identity
+@using WebDoctors.Data
+@using Microsoft.Extensions.Options
+@inject IOptions<WebDoctors.Services.StripeSettings> Stripe
+@inject SignInManager<Person> SignInManager
+@inject UserManager<Person> UserManager
+
+@{
+    ViewData["Title"] = "Appointment Details";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        @{
+            var successMessage = TempData["PaymentSuccess"];
+            var errorMessage = TempData["PaymentError"];
+            @if (successMessage != null && !string.IsNullOrEmpty(successMessage.ToString()))
+            {
+                <div class="alert alert-success" role="alert">
+                    @TempData["PaymentSuccess"]
+                </div>
+            }
+            else if (errorMessage != null && !string.IsNullOrEmpty(errorMessage.ToString()))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @TempData["PaymentError"]
+                </div>
+            }
+        }
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Appointment Details</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.Patient)</strong>
+                        <p class="text-muted">
+                            @Html.DisplayFor(model => model.Patient.LastName), @Html.DisplayFor(model => model.Patient.FirstName)
+                        </p>
+
+                        <hr>
+                        <strong><i class="fas fa-user-nurse mr-1"></i> @Html.DisplayNameFor(model => model.Doctor)</strong>
+                        <p class="text-muted">@Html.DisplayFor(model => model.Doctor.Person.LastName), @Html.DisplayFor(model => model.Doctor.Person.FirstName)</p>
+
+                        <hr>
+                        <strong><i class="fas fa-calendar mr-1"></i>Appointment Date</strong>
+                        <p class="text-muted">@Model.AppointmentDay.ToString("MM/dd/yyyy") - @DateTime.Today.Add(Model.AppointmentTime).ToString("hh:mm tt") - @Html.DisplayFor(model => model.AppointmentTypeName)</p>
+
+                        <hr>
+                        <strong><i class="fas fa-money-bill mr-1"></i> @Html.DisplayNameFor(model => model.Price)</strong>
+                        <p class="text-muted">
+                            <span>@Html.DisplayFor(model => model.Price)</span>
+                            @if (!Model.IsPaid)
+                            {
+                                <form asp-action="Payment" asp-controller="Appointments" asp-route-id="@Model.Id" method="POST">
+                                    <script src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+                                            data-key="@Stripe.Value.PublishableKey"
+                                            data-amount="@(Model.Price * 100)"
+                                            data-description="Pay Consultation"
+                                            data-locale="auto">
+                                    </script>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="badge badge-success">Paid</span>
+                            }
+                        </p>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <div>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+                    }
+                    else
+                    {
+                        <a asp-action="MyAppointments" class="btn btn-outline-secondary btn-block">Back to List</a>
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Appointment Files</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <strong><i class="fas fa-file mr-1"></i> Diagnosis</strong>
+                        <p class="text-muted">
+                            @if (!string.IsNullOrWhiteSpace(Model.DiagnosisFilePath))
+                            {
+                                <a target="_blank" href="@Model.DiagnosisFilePath">Download</a>
+                            }
+                            else
+                            {
+                                <span>Not Uploaded.</span>
+                            }
+                        </p>
+
+                        <hr>
+                        <strong><i class="fas fa-file mr-1"></i> Prescription</strong>
+                        <p class="text-muted">
+                            @if (!string.IsNullOrWhiteSpace(Model.PrescriptionFilePath))
+                            {
+                                <a target="_blank" href="@Model.PrescriptionFilePath">Download</a>
+                            }
+                            else
+                            {
+                                <span>Not Uploaded.</span>
+                            }
+                        </p>
+
+                        <hr>
+                        <strong><i class="fas fa-file mr-1"></i> Test Results</strong>
+                        <p class="text-muted">
+                            @if (!string.IsNullOrWhiteSpace(Model.TestResultsFilePath))
+                            {
+                                <a target="_blank" href="@Model.TestResultsFilePath">Download</a>
+                            }
+                            else
+                            {
+                                <span>Not Uploaded.</span>
+                            }
+                        </p>
+
+                        <hr>
+                        <strong><i class="fas fa-file mr-1"></i> Diet Plan</strong>
+                        <p class="text-muted">
+                            @if (!string.IsNullOrWhiteSpace(Model.DietPlanFilePath))
+                            {
+                                <a target="_blank" href="@Model.DietPlanFilePath">Download</a>
+                            }
+                            else
+                            {
+                                <span>Not Uploaded.</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

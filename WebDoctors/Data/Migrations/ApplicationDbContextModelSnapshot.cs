@@ -232,8 +232,20 @@ namespace WebDoctors.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("AppointmentTime")
+                    b.Property<DateTime>("AppointmentDay")
                         .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("AppointmentTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("AppointmentType")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
 
                     b.Property<string>("DiagnosisFilePath")
                         .HasColumnType("nvarchar(max)");
@@ -241,87 +253,34 @@ namespace WebDoctors.Data.Migrations
                     b.Property<string>("DietPlanFilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PersonId1")
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PrescriptionFilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SpecializationId")
-                        .HasColumnType("int");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<string>("TestResultsFilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("PersonId1");
-
-                    b.HasIndex("SpecializationId");
-
-                    b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("WebDoctors.Data.Availability", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Friday")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("FridayHours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Monday")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("MondayHours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Saturday")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("SaturdayHours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Sunday")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("SundayHours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Thursday")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ThursdayHours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Tuesday")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("TuesdayHours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Wednesday")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("WednesdayHours")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("TransactionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("Availabilities");
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("WebDoctors.Data.Doctor", b =>
@@ -331,11 +290,23 @@ namespace WebDoctors.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<float>("ConsultationFee")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PersonId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SpecializationId")
                         .HasColumnType("int");
+
+                    b.Property<string>("YoutubeVideo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -344,6 +315,58 @@ namespace WebDoctors.Data.Migrations
                     b.HasIndex("SpecializationId");
 
                     b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("WebDoctors.Data.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<TimeSpan>("ConsultationTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("Schedules");
+                });
+
+            modelBuilder.Entity("WebDoctors.Data.ScheduleTime", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("DayOfTheWeek")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DayOfTheWeekName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EndTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StartTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("ScheduleTimes");
                 });
 
             modelBuilder.Entity("WebDoctors.Data.Specialization", b =>
@@ -355,6 +378,9 @@ namespace WebDoctors.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Featured")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -436,30 +462,19 @@ namespace WebDoctors.Data.Migrations
 
             modelBuilder.Entity("WebDoctors.Data.Appointment", b =>
                 {
-                    b.HasOne("WebDoctors.Data.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId1");
-
-                    b.HasOne("WebDoctors.Data.Specialization", "Specialization")
-                        .WithMany()
-                        .HasForeignKey("SpecializationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
-
-                    b.Navigation("Specialization");
-                });
-
-            modelBuilder.Entity("WebDoctors.Data.Availability", b =>
-                {
                     b.HasOne("WebDoctors.Data.Doctor", "Doctor")
                         .WithMany()
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebDoctors.Data.Person", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+
                     b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("WebDoctors.Data.Doctor", b =>
@@ -477,6 +492,28 @@ namespace WebDoctors.Data.Migrations
                     b.Navigation("Person");
 
                     b.Navigation("Specialization");
+                });
+
+            modelBuilder.Entity("WebDoctors.Data.Schedule", b =>
+                {
+                    b.HasOne("WebDoctors.Data.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
+            modelBuilder.Entity("WebDoctors.Data.ScheduleTime", b =>
+                {
+                    b.HasOne("WebDoctors.Data.Schedule", "Schedule")
+                        .WithMany()
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
                 });
 #pragma warning restore 612, 618
         }

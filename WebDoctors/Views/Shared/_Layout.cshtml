@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebDoctors</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -28,12 +29,9 @@
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Doctors" asp-action="Index">Doctors</a>
-                                </li>
-                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Appointments" asp-action="MyAppointments">Appointments</a>
+                            </li>
 
                             if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
                             {
@@ -43,7 +41,12 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                         <a class="dropdown-item text-dark" asp-controller="Patients" asp-action="Index">Patients</a>
+                                        <a class="dropdown-item text-dark" asp-controller="Appointments" asp-action="Index">Appointments</a>
                                         <a class="dropdown-item text-dark" asp-controller="Specializations" asp-action="Index">Specializations</a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a class="dropdown-item text-dark" asp-controller="Doctors" asp-action="Index">Doctors</a>
+                                        }
                                     </div>
                                 </li>
                             }
@@ -68,6 +71,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,232 @@
+﻿@model WebDoctors.Models.CreateAppointmentVM
+
+@{
+    ViewData["Title"] = "Add Appointment";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <form id="form" asp-action="Create">
+            <input type="hidden" asp-for="PatientId" />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Add Appointment</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <strong><i class="fas fa-book mr-1"></i> Type</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <select asp-for="AppointmentType" asp-items="Model.AppointmentTypes" class="form-control" id="appointmentTypeDropdown">
+                                        <option value="" disabled selected>Select A Type</option>
+                                    </select>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="fas fa-user-md mr-1"></i> Specialization</strong>
+                            <p class="text-muted">
+                                <div class="form-group">
+                                    <select asp-for="SpecializationId" asp-items="Model.Specialization" class="form-control" id="specializationsDropdown">
+                                        <option value="" disabled selected>Select A Specialization</option>
+                                    </select>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <div>
+                                <strong><i class="fas fa-user-nurse mr-1"></i> Doctor</strong>
+                                <p class="text-muted">
+                                    <div class="form-group">
+                                        <select asp-for="DoctorId" asp-items="Model.Doctors" class="form-control" id="doctorsDropdown">
+                                            <option value="" disabled selected>Select A Doctor</option>
+                                        </select>
+                                    </div>
+                                </p>
+                            </div>
+
+                            <hr>
+                            <strong><i class="far fa-calendar mr-1"></i> Date</strong>
+                            <p class="text-muted">
+                                <div class="form-group" id="selectDay">
+                                    <input asp-for="AppointmentDay" class="form-control" id="selectDayCalendar" />
+                                    <span asp-validation-for="AppointmentDay" class="text-danger"></span>
+                                </div>
+                            </p>
+
+                            <hr>
+                            <strong><i class="far fa-clock mr-1"></i> Time</strong>
+                            <p class="text-muted">
+                                <div class="form-group" id="selectTime">
+                                    <select asp-for="AppointmentTimeSelected" asp-items="Model.AppointmentTimes" class="form-control" id="selectTimeDropdown">
+                                        <option value="" disabled selected>Select A Time</option>
+                                    </select>
+                                </div>
+                            </p>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <div class="form-group" id="btnSubmit">
+                        <input type="submit" value="Add Appointment" class="btn btn-success btn-block" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-info" id="doctorsSchedule">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    @if (User.IsInRole("Admin") || User.IsInRole("Doctor"))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+                    }
+                    else
+                    {
+                        <a asp-action="MyAppointments" class="btn btn-outline-secondary btn-block">Back to List</a>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts 
+{
+    <script>
+        $(document).ready(function () {
+            const appointmentTypeDropdown = $('#appointmentTypeDropdown')
+            const specializationsDropdown = $('#specializationsDropdown');
+            const doctorsDropdown = $('#doctorsDropdown');
+            const doctorsScheduleEl = $('#doctorsSchedule');
+            const selectDayEl = $('#selectDay');
+            const selectDayCalendar = $('#selectDayCalendar');
+            const selectTimeDropdown = $('#selectTimeDropdown');
+            const btnSubmit = $('#btnSubmit');
+
+            let doctorId;
+
+            doctorsDropdown.hide();
+            doctorsScheduleEl.hide();
+            selectDayEl.hide();
+            selectTimeDropdown.hide();
+            btnSubmit.hide();
+
+            const appendDoctorsSchedule = (schedules) => {
+                doctorsScheduleEl.append(`
+                        <div class="card-header">
+                            <h3 class="card-title">Schedule</h3>
+                        </div>`)
+
+                var cardBody = document.createElement('div');
+                cardBody.className = "card-body";
+
+                schedules.forEach(function (schedule) {
+                    var startTime = moment(schedule.startTime, "HH:mm:ss").format("hh:mm A");
+                    var endTime = moment(schedule.endTime, "HH:mm:ss").format("hh:mm A");
+                    var time = `${startTime} - ${endTime}`;
+
+                    var title = document.createElement('strong');
+
+                    var icon = document.createElement('i');
+                    icon.className = "fas fa-clock mr-1";
+                    icon.textContent = ` ${schedule.dayOfTheWeekName}`;
+
+                    title.appendChild(icon);
+
+                    var paragraph = document.createElement('p');
+                    paragraph.className = 'text-muted';
+                    paragraph.textContent = `${schedule.available ? time : 'Off'}`;
+
+                    var row = document.createElement('hr')
+
+                    cardBody.appendChild(title);
+                    cardBody.appendChild(paragraph);
+                    cardBody.appendChild(row);
+                })
+
+                doctorsScheduleEl.append(cardBody);
+            }
+
+            appointmentTypeDropdown.change(function (e) {
+                appointmentType = e.target.value;
+            })
+
+            specializationsDropdown.change(function (e) {
+                const specializationId = e.target.value;
+
+                doctorsDropdown.empty();
+                doctorsScheduleEl.empty();
+                doctorsScheduleEl.hide();
+                selectDayEl.hide();
+                selectTimeDropdown.hide()
+                selectTimeDropdown.empty();
+                btnSubmit.hide()
+
+                $.ajax({
+                    url: `/Appointments/GetDoctorsBySpecialization/${specializationId}`,
+                    method: 'Get'
+                }).done(function (response) {
+                    if (!response || response.length == 0) {
+                        doctorsDropdown.append('<option disabled selected>No Doctors</option>');
+                    }
+                    else {
+                        doctorsDropdown.append('<option disabled selected>Select A Doctor</option>');
+                        response.forEach(function (doctor) {
+                            doctorsDropdown.append(new Option(`${doctor.person.lastName}, ${doctor.person.firstName}`, doctor.id));
+                        })
+                    }
+                    doctorsDropdown.show();
+                })
+            })
+
+            doctorsDropdown.change(function (e) {
+                doctorId = e.target.value;
+                selectTimeDropdown.hide()
+                selectTimeDropdown.empty();
+                doctorsScheduleEl.empty();
+                btnSubmit.hide();
+
+                $.ajax({
+                    url: `/Appointments/GetDoctorScheduleTime/${doctorId}`,
+                    method: 'Get'
+                }).done(function (response) {
+                    appendDoctorsSchedule(response);
+                    doctorsScheduleEl.show();
+                    selectDayEl.show();
+                })
+            })
+
+            selectDayCalendar.datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: new Date(),
+                onSelect: function (date) {
+                    selectTimeDropdown.empty()
+                    btnSubmit.hide()
+
+                    $.ajax({
+                        url: `/Appointments/GetAvailableTimes/${doctorId}/${date}`,
+                        method: 'Get'
+                    }).done(function (response) {
+                        if (!response) {
+                            selectTimeDropdown.append('<option disabled selected>Not Available</option>')
+                        } else {
+                            selectTimeDropdown.append('<option disabled selected>Select A Time</option>');
+                            response.forEach(function (time) {
+                                selectTimeDropdown.append(new Option(time.text, time.value));
+                            })
+                        }
+                        selectTimeDropdown.show()
+                    })
+                }
+            });
+
+            selectTimeDropdown.change(function (e) {
+                btnSubmit.show();
+            })
+        })
+    </script>
+}

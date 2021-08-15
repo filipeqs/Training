@@ -22,6 +22,10 @@ namespace WebDoctors.Areas.Identity.Pages.Account.Manage
 
         public static string PersonalData => "PersonalData";
 
+        public static string DoctorProfile => "DoctorProfile";
+
+        public static string DoctorSchedule => "DoctorSchedule";
+
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
@@ -39,6 +43,10 @@ namespace WebDoctors.Areas.Identity.Pages.Account.Manage
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+
+        public static string DoctorProfileNavClass(ViewContext viewContext) => PageNavClass(viewContext, DoctorProfile);
+
+        public static string DoctorScheduleNavClass(ViewContext viewContext) => PageNavClass(viewContext, DoctorSchedule);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

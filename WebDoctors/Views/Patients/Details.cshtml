@@ -1,0 +1,42 @@
+﻿@model WebDoctors.Models.PersonVM
+
+@{
+    ViewData["Title"] = "Patients Details";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Patient Details</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.FirstName)</strong>
+
+                <p class="text-muted">
+                    @Html.DisplayFor(model => model.FirstName)
+                </p>
+
+                <hr>
+
+                <strong><i class="fas fa-user mr-1"></i> @Html.DisplayNameFor(model => model.LastName)</strong>
+
+                <p class="text-muted">@Html.DisplayFor(model => model.LastName)</p>
+
+                <hr>
+
+                <strong><i class="fas fa-birthday-cake mr-1"></i> @Html.DisplayNameFor(model => model.DateOfBirth)</strong>
+
+                <p class="text-muted">
+                    @Model.DateOfBirth.ToString("MM/dd/yyyy")
+                </p>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-outline-secondary btn-block">Back to List</a>
+</div>

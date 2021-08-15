@@ -36,10 +36,24 @@ namespace WebDoctors.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Date Of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime DateOfBirth { get; set; }
         }
 
         private async Task LoadAsync(Person user)
         {
+            var loggedInUser = await _userManager.GetUserAsync(User);
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
@@ -47,7 +61,10 @@ namespace WebDoctors.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = loggedInUser.FirstName,
+                LastName = loggedInUser.LastName,
+                DateOfBirth = loggedInUser.DateOfBirth
             };
         }
 
@@ -86,6 +103,17 @@ namespace WebDoctors.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            user.FirstName = Input.FirstName;
+            user.LastName = Input.LastName;
+            user.DateOfBirth = Input.DateOfBirth;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                StatusMessage = "Unexpected error when trying to update user.";
+                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);

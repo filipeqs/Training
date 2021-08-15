@@ -1,0 +1,223 @@
+﻿@page
+@model DoctorScheduleModel
+@{
+    ViewData["Title"] = "Doctor Schedule";
+    ViewData["ActivePage"] = ManageNavPages.DoctorSchedule;
+}
+
+<hr />
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row">
+    <div class="col-md-12">
+        <form id="profile-form" method="post">
+            <input type="hidden" asp-for="Input.Id" />
+            <input type="hidden" asp-for="Input.DoctorId" />
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Update Schedule</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <strong><i class="fas fa-book mr-1"></i> Consultation Time</strong>
+                    <p class="text-muted">
+                        <div class="form-group">
+                            <input asp-for="Input.ConsultationTime" class="form-control" />
+                            <span asp-validation-for="Input.ConsultationTime" class="text-danger"></span>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-calendar-day mr-1"></i> Sunday</strong>
+                    <p class="text-muted">
+                        <div class="row d-flex align-items-center">
+                            <div class="form-group form-check col-md-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Input.Sunday" /> Available?
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.SundayStartTime" class="control-label"></label>
+                                    <input asp-for="Input.SundayStartTime" class="form-control" />
+                                    <span asp-validation-for="Input.SundayStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.SundayEndTime" class="control-label"></label>
+                                    <input asp-for="Input.SundayEndTime" class="form-control" />
+                                    <span asp-validation-for="Input.SundayEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-calendar-day mr-1"></i> Monday</strong>
+                    <p class="text-muted">
+                        <div class="row d-flex align-items-center">
+                            <div class="form-group form-check col-md-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Input.Monday" /> Available?
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.MondayStartTime" class="control-label"></label>
+                                    <input asp-for="Input.MondayStartTime" class="form-control" />
+                                    <span asp-validation-for="Input.MondayStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.MondayEndTime" class="control-label"></label>
+                                    <input asp-for="Input.MondayEndTime" class="form-control" />
+                                    <span asp-validation-for="Input.MondayEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-calendar-day mr-1"></i> Tuesday</strong>
+                    <p class="text-muted">
+                        <div class="row d-flex align-items-center">
+                            <div class="form-group form-check col-md-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Input.Tuesday" /> Available?
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.TuesdayStartTime" class="control-label"></label>
+                                    <input asp-for="Input.TuesdayStartTime" class="form-control" />
+                                    <span asp-validation-for="Input.TuesdayStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.TuesdayEndTime" class="control-label"></label>
+                                    <input asp-for="Input.TuesdayEndTime" class="form-control" />
+                                    <span asp-validation-for="Input.TuesdayEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-calendar-day mr-1"></i> Wednesday</strong>
+                    <p class="text-muted">
+                        <div class="row d-flex align-items-center">
+                            <div class="form-group form-check col-md-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Input.Wednesday" /> Available?
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.WednesdayStartTime" class="control-label"></label>
+                                    <input asp-for="Input.WednesdayStartTime" class="form-control" />
+                                    <span asp-validation-for="Input.WednesdayStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.WednesdayEndTime" class="control-label"></label>
+                                    <input asp-for="Input.WednesdayEndTime" class="form-control" />
+                                    <span asp-validation-for="Input.WednesdayEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-calendar-day mr-1"></i> Thursday</strong>
+                    <p class="text-muted">
+                        <div class="row d-flex align-items-center">
+                            <div class="form-group form-check col-md-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Input.Thursday" /> Available?
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.ThursdayStartTime" class="control-label"></label>
+                                    <input asp-for="Input.ThursdayStartTime" class="form-control" />
+                                    <span asp-validation-for="Input.ThursdayStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.ThursdayEndTime" class="control-label"></label>
+                                    <input asp-for="Input.ThursdayEndTime" class="form-control" />
+                                    <span asp-validation-for="Input.ThursdayEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-calendar-day mr-1"></i> Friday</strong>
+                    <p class="text-muted">
+                        <div class="row d-flex align-items-center">
+                            <div class="form-group form-check col-md-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Input.Friday" /> Available?
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.FridayStartTime" class="control-label"></label>
+                                    <input asp-for="Input.FridayStartTime" class="form-control" />
+                                    <span asp-validation-for="Input.FridayStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.FridayEndTime" class="control-label"></label>
+                                    <input asp-for="Input.FridayEndTime" class="form-control" />
+                                    <span asp-validation-for="Input.FridayEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+
+                    <hr>
+                    <strong><i class="fas fa-calendar-day mr-1"></i> Saturday</strong>
+                    <p class="text-muted">
+                        <div class="row d-flex align-items-center">
+                            <div class="form-group form-check col-md-2">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Input.Saturday" /> Available?
+                                </label>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.SaturdayStartTime" class="control-label"></label>
+                                    <input asp-for="Input.SaturdayStartTime" class="form-control" />
+                                    <span asp-validation-for="Input.SaturdayStartTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label asp-for="Input.SaturdayEndTime" class="control-label"></label>
+                                    <input asp-for="Input.SaturdayEndTime" class="form-control" />
+                                    <span asp-validation-for="Input.SaturdayEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <button id="update-doctor-schedule-button" type="submit" class="btn btn-success btn-block">Update</button>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
